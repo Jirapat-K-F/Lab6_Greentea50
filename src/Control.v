@@ -24,7 +24,7 @@ module Control (
                 ALUSrc1 <= 0;
                 ALUSrc2 <= 0;
                 regWrite <= 1;
-                pcSel <= 0;
+                PCSel <= 0;
             end
 
             5'b00100: begin // i type

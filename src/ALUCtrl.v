@@ -17,13 +17,13 @@ module ALUCtrl (
             ALUCtl <= 4'b0001; // Sub
         end else begin
             case (ALUOp)
-                3'b000, 3'b001: case (funct3)
+                3'b000: case (funct3)
                     3'b000: ALUCtl <= 4'b0000; // Add/Addi
                     3'b010: ALUCtl <= 4'b0100; // Slt/Slti
                     3'b110: ALUCtl <= 4'b0011; // Or/Ori
                     3'b111: ALUCtl <= 4'b0010; // And/Andi
                 endcase
-                3'b010, 3'b011, 3'b101, 3'b110: ALUCtl <= 4'b0000; // Lw/Sw/Jal/Jalr
+                3'b010: ALUCtl <= 4'b0000; // Lw/Sw/Jal/Jalr
                 3'b100: case (funct3)
                     3'b000: ALUCtl <= 4'b1010; // Beq
                     3'b001: ALUCtl <= 4'b1011; // Bne

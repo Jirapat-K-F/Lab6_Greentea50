@@ -12,7 +12,5 @@ module Control (
 
     // TODO: implement your Control here
     // Hint: follow the Architecture (figure in spec) to set output signal
-    
 
 endmodule
-

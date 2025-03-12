@@ -68,7 +68,7 @@ Register m_Register(
 );
 
 wire [31:0] rdDataMem;
-wire [31:0] aluOut;
+reg signed [31:0] aluOut;
 DataMemory m_DataMemory(
     .rst(start),
     .clk(clk),
@@ -81,7 +81,7 @@ DataMemory m_DataMemory(
 
 // ------------------------------------------
 
-wire signed [31:0] imm;
+reg signed [31:0] imm;
 ImmGen m_ImmGen(
     .inst(inst),
     .imm(imm)
@@ -117,7 +117,7 @@ ALUCtrl m_ALUCtrl(
     .ALUCtl(aluCtl)
 );
 
-
+wire less, equal;
 ALU m_ALU(
     .ALUctl(aluCtl),
     .brLt(less),
@@ -135,7 +135,6 @@ Mux3to1 #(.size(32)) m_Mux_WriteData(
     .out(writeData)
 );
 
-wire less, equal;
 BranchComp m_BranchComp(
     .rs1(rdData1),
     .rs2(rdData2),

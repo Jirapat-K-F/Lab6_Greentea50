@@ -11,7 +11,7 @@ module SingleCycleCPU (
 // TODO: Connect wires to realize SingleCycleCPU and instantiate all modules related to seven-segment displays
 // The following provides simple template,
 
-reg [31:0] pc_i, pc_o;
+wire [31:0] pc_i, pc_o;
 PC m_PC(
     .clk(clk),
     .rst(start),
@@ -19,22 +19,22 @@ PC m_PC(
     .pc_o(pc_o)
 );
 
-reg [31:0] pc_4;
+wire [31:0] pc_4;
 Adder m_Adder_1(
     .a(pc_o),
     .b(4),
     .sum(pc_4)
 );
 
-reg [31:0] inst;
+wire [31:0] inst;
 InstructionMemory m_InstMem(
     .readAddr(pc_o),
     .inst(inst)
 );
 
-reg memRd, memWr, aluSrc1, aluSrc2, regWr, PCSel;
-reg [1:0] memReg;
-reg [2:0] aluOp;
+wire memRd, memWr, aluSrc1, aluSrc2, regWr, PCSel;
+wire [1:0] memReg;
+wire [2:0] aluOp;
 Control m_Control(
     .opcode(inst[6:0]),
     .memRead(memRd),
@@ -53,7 +53,7 @@ Control m_Control(
 // Or you will fail validation.
 // By the way, you still have to wire up these modules
 
-reg [31:0] rdData1, rdData2, reg5Data, writeData;
+wire [31:0] rdData1, rdData2, reg5Data, writeData;
 Register m_Register(
     .clk(clk),
     .rst(start),
@@ -67,7 +67,8 @@ Register m_Register(
     .reg5Data(reg5Data)
 );
 
-reg [31:0] rdDataMem;
+wire [31:0] rdDataMem;
+wire [31:0] aluOut;
 DataMemory m_DataMemory(
     .rst(start),
     .clk(clk),
@@ -80,7 +81,7 @@ DataMemory m_DataMemory(
 
 // ------------------------------------------
 
-reg signed [31:0] imm;
+wire signed [31:0] imm;
 ImmGen m_ImmGen(
     .inst(inst),
     .imm(imm)
@@ -93,7 +94,7 @@ Mux2to1 #(.size(32)) m_Mux_PC(
     .out(pc_i)
 );
 
-reg [31:0] outALU1, outALU2;
+wire [31:0] outALU1, outALU2;
 Mux2to1 #(.size(32)) m_Mux_ALU_1(
     .sel(aluSrc1),
     .s0(rdData1),
@@ -108,7 +109,7 @@ Mux2to1 #(.size(32)) m_Mux_ALU_2(
     .out(outALU2)
 );
 
-reg [3:0] aluCtl;
+wire [3:0] aluCtl;
 ALUCtrl m_ALUCtrl(
     .ALUOp(aluOp),
     .funct7(inst[31:25]),
@@ -116,7 +117,7 @@ ALUCtrl m_ALUCtrl(
     .ALUCtl(aluCtl)
 );
 
-reg [31:0] aluOut;
+
 ALU m_ALU(
     .ALUctl(aluCtl),
     .brLt(less),
@@ -134,7 +135,7 @@ Mux3to1 #(.size(32)) m_Mux_WriteData(
     .out(writeData)
 );
 
-reg less, equal;
+wire less, equal;
 BranchComp m_BranchComp(
     .rs1(rdData1),
     .rs2(rdData2),

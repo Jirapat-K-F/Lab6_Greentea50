@@ -9,32 +9,20 @@ module ALU (
 
     // TODO: implement your ALU here
     // Hint: you can use operator to implement
-reg [31:0] f;
+
 always @(*) begin
-    f = A-B;
-    if(ALUctl == 4'b0000)begin
-        ALUOut <= A+B;
-    end
-    if(ALUctl == 4'b0001)begin
-        ALUOut <= A-B;
-    end
-    if(ALUctl == 4'b0010)begin
-        ALUOut <= A&B;
-    end
-    if(ALUctl == 4'b0011)begin
-        ALUOut <= A|B;
-    end
-    if(ALUctl == 4'b0100 )begin
-        if(f[31] == 1'b1 || f==0)begin
-            ALUOut<=0;
-        end else begin ALUOut<=1;
-        end
-    end
-    if(ALUctl == 4'b1001)begin
-        ALUOut <= (A+B)&~32'b1;
-        
-    end 
-    
+    case (ALUctl)
+        4'b0000: ALUOut <= A + B; // Add/Lw/Sw
+        4'b0001: ALUOut <= A - B; // Sub
+        4'b0010: ALUOut <= A & B; // And
+        4'b0011: ALUOut <= A | B; // Or
+        4'b0100: ALUOut <= (A < B ? 1 : 0); // Slt
+        4'b0101: ALUOut <= (brEq ? A+B : A+4); // Beq
+        4'b0110: ALUOut <= (!brEq ? A+B : A+4); // Bne
+        4'b0111: ALUOut <= (brLt ? A+B : A+4); // Blt
+        4'b1000: ALUOut <= (!brLt ? A+B : A+4); // Bge
+        4'b1001: ALUOut <= A+B; // Jal/Jalr
+    endcase
 end
     
 endmodule

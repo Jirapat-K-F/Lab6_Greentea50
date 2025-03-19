@@ -1,0 +1,15 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1742368609" />
+    <testcase name="Testcase01" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="264" time="0.011996746063232422" sim_time_ns="105.001" ratio_time="8752.456661711516" />
+    <testcase name="Testcase02" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="268" time="0.003473997116088867" sim_time_ns="55.001000000000005" ratio_time="15832.195065815662">
+      <failure message="Test failed with RANDOM_SEED=1742368609" />
+    </testcase>
+    <testcase name="Testcase03" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="272" time="0.018061161041259766" sim_time_ns="205.00099999999998" ratio_time="11350.377726641496" />
+    <testcase name="Testcase04" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="276" time="0.01207423210144043" sim_time_ns="125.00100000000003" ratio_time="10352.708060422963" />
+    <testcase name="Testcase05" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="280" time="0.01519775390625" sim_time_ns="105.00099999999998" ratio_time="6908.981461847388" />
+    <testcase name="Testcase06" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="284" time="0.012035608291625977" sim_time_ns="115.00099999999998" ratio_time="9555.063376399039" />
+    <testcase name="Testcase07" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="288" time="0.015008687973022461" sim_time_ns="165.00099999999998" ratio_time="10993.69913589935" />
+    <testcase name="Testcase08" classname="TB" file="D:\Rachata\stuff\work\hw_syn_lab\Lab6_Greentea50\cocotb\TB.py" lineno="292" time="0.0359957218170166" sim_time_ns="405.0010000000001" ratio_time="11251.364872159338" />
+  </testsuite>
+</testsuites>

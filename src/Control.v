@@ -29,7 +29,7 @@ module Control (
             5'b00100: begin // i type
                 memRead <= 0;
                 memtoReg <= 0;
-                ALUOp <= 3'b000;
+                ALUOp <= 3'b001;
                 memWrite <= 0;
                 ALUSrc1 <= 0;
                 ALUSrc2 <= 1;
@@ -51,7 +51,7 @@ module Control (
             5'b01000: begin // s type
                 memRead <= 0;
                 memtoReg <= 0;
-                ALUOp <= 3'b010;
+                ALUOp <= 3'b011;
                 memWrite <= 1;
                 ALUSrc1 <= 0;
                 ALUSrc2 <= 1;
@@ -62,7 +62,7 @@ module Control (
             5'b11000: begin // b type
                 memRead <= 0;
                 memtoReg <= 0;
-                ALUOp <= 3'b100;
+                ALUOp <= 3'b110;
                 memWrite <= 0;
                 ALUSrc1 <= 1;
                 ALUSrc2 <= 1;
@@ -73,7 +73,7 @@ module Control (
             5'b11011: begin // j type
                 memRead <= 0;
                 memtoReg <= 2;
-                ALUOp <= 3'b010;
+                ALUOp <= 3'b101;
                 memWrite <= 0;
                 ALUSrc1 <= 1;
                 ALUSrc2 <= 1;
@@ -84,7 +84,7 @@ module Control (
             5'b11001: begin // j type
                 memRead <= 0;
                 memtoReg <= 2;
-                ALUOp <= 3'b010;
+                ALUOp <= 3'b100;
                 memWrite <= 0;
                 ALUSrc1 <= 0;
                 ALUSrc2 <= 1;

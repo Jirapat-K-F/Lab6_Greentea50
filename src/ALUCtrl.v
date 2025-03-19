@@ -15,7 +15,7 @@ module ALUCtrl (
     always @(*) begin
         case (ALUOp)
             3'b000: case (funct3)
-                3'b000: ALUCtl <= (funct7 ? 4'b0000 : 4'b0001); // Add/Sub
+                3'b000: ALUCtl <= (funct7 ? 4'b0001 : 4'b0000); // Add/Sub
                 3'b010: ALUCtl <= 4'b0100; // Slt
                 3'b110: ALUCtl <= 4'b0011; // Or
                 3'b111: ALUCtl <= 4'b0010; // And

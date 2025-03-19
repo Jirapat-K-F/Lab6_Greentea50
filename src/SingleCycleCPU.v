@@ -11,7 +11,7 @@ module SingleCycleCPU (
 // TODO: Connect wires to realize SingleCycleCPU and instantiate all modules related to seven-segment displays
 // The following provides simple template,
 
-wire [31:0] pc_i, pc_o;
+wire signed [31:0] pc_i, pc_o, next_pc;
 PC m_PC(
     .clk(clk),
     .rst(start),
@@ -19,31 +19,30 @@ PC m_PC(
     .pc_o(pc_o)
 );
 
-wire [31:0] pc_4;
 Adder m_Adder_1(
     .a(pc_o),
-    .b(4),
-    .sum(pc_4)
+    .b(32'd4),
+    .sum(next_pc)
 );
 
-wire [31:0] inst;
+wire signed [31:0] inst;
 InstructionMemory m_InstMem(
     .readAddr(pc_o),
     .inst(inst)
 );
 
-wire memRd, memWr, aluSrc1, aluSrc2, regWr, PCSel;
+wire memRead, memWrite, aluSrc1, aluSrc2, regWrite, PCSel;
 wire [1:0] memReg;
 wire [2:0] aluOp;
 Control m_Control(
     .opcode(inst[6:0]),
-    .memRead(memRd),
+    .memRead(memRead),
     .memtoReg(memReg),
     .ALUOp(aluOp),
-    .memWrite(memWr),
+    .memWrite(memWrite),
     .ALUSrc1(aluSrc1),
     .ALUSrc2(aluSrc2),
-    .regWrite(regWr),
+    .regWrite(regWrite),
     .PCSel(PCSel)
 );
 
@@ -53,35 +52,35 @@ Control m_Control(
 // Or you will fail validation.
 // By the way, you still have to wire up these modules
 
-wire [31:0] rdData1, rdData2, reg5Data, writeData;
+wire signed [31:0] readData1, readData2, reg5Data, writeData;
 Register m_Register(
     .clk(clk),
     .rst(start),
-    .regWrite(regWr),
-    .readReg1(inst[24:20]),
-    .readReg2(inst[19:15]),
+    .regWrite(regWrite),
+    .readReg1(inst[19:15]),
+    .readReg2(inst[24:20]),
     .writeReg(inst[11:7]),
     .writeData(writeData),
-    .readData1(rdData1),
-    .readData2(rdData2),
+    .readData1(readData1),
+    .readData2(readData2),
     .reg5Data(reg5Data)
 );
 
-wire [31:0] rdDataMem;
-reg signed [31:0] aluOut;
+wire signed [31:0] readDataMem;
+wire signed [31:0] aluOut;
 DataMemory m_DataMemory(
     .rst(start),
     .clk(clk),
-    .memWrite(memWr),
-    .memRead(memRd),
+    .memWrite(memWrite),
+    .memRead(memRead),
     .address(aluOut),
-    .writeData(rdData2),
-    .readData(rdDataMem)
+    .writeData(readData2),
+    .readData(readDataMem)
 );
 
 // ------------------------------------------
 
-reg signed [31:0] imm;
+wire signed [31:0] imm;
 ImmGen m_ImmGen(
     .inst(inst),
     .imm(imm)
@@ -94,17 +93,17 @@ Mux2to1 #(.size(32)) m_Mux_PC(
     .out(pc_i)
 );
 
-wire [31:0] outALU1, outALU2;
+wire signed [31:0] outALU1, outALU2;
 Mux2to1 #(.size(32)) m_Mux_ALU_1(
     .sel(aluSrc1),
-    .s0(rdData1),
+    .s0(readData1),
     .s1(pc_o),
     .out(outALU1)
 );
 
 Mux2to1 #(.size(32)) m_Mux_ALU_2(
     .sel(aluSrc2),
-    .s0(rdData2),
+    .s0(readData2),
     .s1(imm),
     .out(outALU2)
 );
@@ -112,7 +111,7 @@ Mux2to1 #(.size(32)) m_Mux_ALU_2(
 wire [3:0] aluCtl;
 ALUCtrl m_ALUCtrl(
     .ALUOp(aluOp),
-    .funct7(inst[31:25]),
+    .funct7(inst[30]),
     .funct3(inst[14:12]),
     .ALUCtl(aluCtl)
 );
@@ -130,14 +129,14 @@ ALU m_ALU(
 Mux3to1 #(.size(32)) m_Mux_WriteData(
     .sel(memReg),
     .s0(aluOut),
-    .s1(rdDataMem),
+    .s1(readDataMem),
     .s2(pc_4),
     .out(writeData)
 );
 
 BranchComp m_BranchComp(
-    .rs1(rdData1),
-    .rs2(rdData2),
+    .rs1(readData1),
+    .rs2(readData2),
     .brLt(less),
     .brEq(equal)
 );

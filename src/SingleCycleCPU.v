@@ -88,7 +88,7 @@ ImmGen m_ImmGen(
 
 Mux2to1 #(.size(32)) m_Mux_PC(
     .sel(PCSel),
-    .s0(pc_4),
+    .s0(next_pc),
     .s1(aluOut),
     .out(pc_i)
 );
@@ -130,7 +130,7 @@ Mux3to1 #(.size(32)) m_Mux_WriteData(
     .sel(memReg),
     .s0(aluOut),
     .s1(readDataMem),
-    .s2(pc_4),
+    .s2(next_pc),
     .out(writeData)
 );
 

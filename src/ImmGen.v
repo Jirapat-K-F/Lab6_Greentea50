@@ -4,44 +4,26 @@ module ImmGen (
 );
     // ImmGen generate imm value base opcode
 
+    parameter OP_JAL    = 7'b1101111;
+    parameter OP_JALR   = 7'b1100111;
+    parameter OP_BRANCH = 7'b1100011;
+    parameter OP_LW     = 7'b0000011;
+    parameter OP_SW     = 7'b0100011;
+    parameter OP_I      = 7'b0010011;
+    parameter OP_R      = 7'b0110011;
+
     wire [6:0] opcode = inst[6:0];
     always @(*) begin
         case(opcode)
             // TODO: implement your ImmGen here
             // Hint: follow the RV32I opcode map (table in spec) to set imm value
-            0010011: begin 
-                imm[31:12] = imm[31];
-                imm[11:0] = inst[31:20];
-            end
-            0000011: begin 
-                imm[31:12] = imm[31];
-                imm[11:0] = inst[31:20];
-            end
-            0100011: begin 
-                imm[31:12] = imm[31];
-                imm[11:5] = inst[31:25];
-                imm[4:0] = inst[11:7];
-            end
-            1100011: begin
-                imm[31:13] = imm[31];
-                imm[12] = inst[31];
-                imm[11] = inst[7];
-                imm[10:5] = inst[30:25];
-                imm[4:1] = inst[11:8];
-                imm[0] = 0;
-            end
-            1101111: begin
-                imm[31:21] = imm[31];
-                imm[20] = inst[31];
-                imm[19:12] = inst[19:12];
-                imm[11] = inst[20];
-                imm[10:1] = inst[30:21];
-                imm[0] = 0;
-            end
-            1100111: begin
-                imm[31:12] = imm[31];
-                imm[11:0] = inst[31:20];
-            end
+            OP_BRANCH : imm = {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'b0}; // B-type, shifted left by 1
+            OP_LW     : imm = {{21{inst[31]}}, inst[30:20]};
+            OP_SW     : imm = {{21{inst[31]}}, inst[30:25], inst[11:7]};
+            OP_I      : imm = {{21{inst[31]}}, inst[30:20]};
+            OP_JAL    : imm = {{12{inst[31]}}, inst[19:12], inst[20], inst[30:21], 1'b0}; // jal, shifted left by 1
+            OP_JALR   : imm = {{21{inst[31]}}, inst[30:20]}; // jalr
+            
         endcase
     end
 
